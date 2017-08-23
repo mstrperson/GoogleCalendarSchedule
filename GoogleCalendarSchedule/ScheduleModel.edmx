@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ScheduleDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ClassSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="text" Nullable="false" />
+          <Property Name="A" Type="time" Precision="7" Nullable="false" />
+          <Property Name="B" Type="time" Precision="7" Nullable="false" />
+          <Property Name="C" Type="time" Precision="7" Nullable="false" />
+          <Property Name="D" Type="time" Precision="7" Nullable="false" />
+          <Property Name="E" Type="time" Precision="7" Nullable="false" />
+          <Property Name="F" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ClassScheduleId" Type="int" Nullable="false" />
+          <Property Name="CalendarEventURI" Type="text" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Table">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ClassScheduleId" Type="int" Nullable="false" />
+          <Property Name="CalendarEventURI" Type="text" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Event_ClassSchedule">
+          <End Role="ClassSchedule" Type="Self.ClassSchedule" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSchedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="ClassScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleDatabaseModelStoreContainer">
+          <EntitySet Name="ClassSchedule" EntityType="Self.ClassSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Event_ClassSchedule" Association="Self.FK_Event_ClassSchedule">
+            <End Role="ClassSchedule" EntitySet="ClassSchedule" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScheduleDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ClassSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="A" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="B" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="C" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="D" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="E" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="F" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Events" Relationship="ScheduleDatabaseModel.FK_Event_ClassSchedule" FromRole="ClassSchedule" ToRole="Event" />
+        </EntityType>
+        <EntityContainer Name="ScheduleDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ClassSchedules" EntityType="Self.ClassSchedule" />
+          <EntitySet Name="Events" EntityType="ScheduleDatabaseModel.Event" />
+          <EntitySet Name="Tables" EntityType="ScheduleDatabaseModel.Table" />
+          <AssociationSet Name="FK_Event_ClassSchedule" Association="ScheduleDatabaseModel.FK_Event_ClassSchedule">
+            <End Role="ClassSchedule" EntitySet="ClassSchedules" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ClassScheduleId" Type="Int32" Nullable="false" />
+          <Property Name="CalendarEventURI" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ClassSchedule" Relationship="ScheduleDatabaseModel.FK_Event_ClassSchedule" FromRole="Event" ToRole="ClassSchedule" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="Table">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ClassScheduleId" Type="Int32" Nullable="false" />
+          <Property Name="CalendarEventURI" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Event_ClassSchedule">
+          <End Type="ScheduleDatabaseModel.ClassSchedule" Role="ClassSchedule" Multiplicity="1" />
+          <End Type="ScheduleDatabaseModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSchedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="ClassScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ScheduleDatabaseModelStoreContainer" CdmEntityContainer="ScheduleDatabaseEntities">
+          <EntitySetMapping Name="ClassSchedules">
+            <EntityTypeMapping TypeName="ScheduleDatabaseModel.ClassSchedule">
+              <MappingFragment StoreEntitySet="ClassSchedule">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="A" ColumnName="A" />
+                <ScalarProperty Name="B" ColumnName="B" />
+                <ScalarProperty Name="C" ColumnName="C" />
+                <ScalarProperty Name="D" ColumnName="D" />
+                <ScalarProperty Name="E" ColumnName="E" />
+                <ScalarProperty Name="F" ColumnName="F" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="ScheduleDatabaseModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CalendarEventURI" ColumnName="CalendarEventURI" />
+                <ScalarProperty Name="ClassScheduleId" ColumnName="ClassScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tables">
+            <EntityTypeMapping TypeName="ScheduleDatabaseModel.Table">
+              <MappingFragment StoreEntitySet="Table">
+                <ScalarProperty Name="CalendarEventURI" ColumnName="CalendarEventURI" />
+                <ScalarProperty Name="ClassScheduleId" ColumnName="ClassScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
